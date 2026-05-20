@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Info SPMB SMP Nasional",
+    "category": "Pendidikan SMP",
+    "icon": "🎓",
+    "description": "Diskusi info masuk SMP, tanya jawab kurikulum, dan sharing orang tua.",
+    "status": "active",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw==" 
+  },
+  {
+    "id": 2,
+    "name": "Komunitas Wali Murid SD",
+    "category": "Pendidikan SD",
+    "icon": "🧸",
+    "description": "Grup khusus orang tua murid SD untuk koordinasi kegiatan sekolah.",
+    "status": "hot",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw=="
+  },
+  {
+    "id": 3,
+    "name": "Psikologi Anak & Remaja",
+    "category": "Parenting",
+    "icon": "🧠",
+    "description": "Sharing masalah psikologis anak, tips mendidik, dan konsultasi ringan.",
+    "status": "trending",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw=="
+  },
+  {
+    "id": 4,
+    "name": "Les Privat Matematika",
+    "category": "Bimbel & Les",
+    "icon": "📐",
+    "description": "Cari guru les atau join grup belajar matematika seru.",
+    "status": "new",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw=="
+  },
+  {
+    "id": 5,
+    "name": "Info Lomba Sekolah 2024",
+    "category": "Pendidikan Umum",
+    "icon": "🏆",
+    "description": "Update terbaru berbagai lomba akademik dan non-akademik.",
+    "status": "members_500",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw=="
+  },
+  {
+    "id": 6,
+    "name": "Guru Penggerak Indonesia",
+    "category": "Komunitas Guru",
+    "icon": "👩‍🏫",
+    "description": "Wadah guru berbagi RPP, metode mengajar, dan inspirasi.",
+    "status": "active",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw=="
+  },
+  {
+    "id": 7,
+    "name": "Bahasa Inggris Santai",
+    "category": "Bahasa",
+    "icon": "🇬🇧",
+    "description": "Practice English daily, no judgment, just fun learning.",
+    "status": "members_1000",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw=="
+  },
+  {
+    "id": 8,
+    "name": "Teknologi Pendidikan",
+    "category": "Teknologi",
+    "icon": "💻",
+    "description": "Discuss ed-tech tools, apps for students, and digital learning.",
+    "status": "developing",
+    "encoded": "U2FsdGVkX19+ZmFrZV9lbmNyeXB0ZWRfbGlua19mb3JfZGVtb19wdXJwb3Nlcw=="
+  }
+]
