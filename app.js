@@ -2,7 +2,7 @@
 const CONFIG = {
     adminPass: 'proyekadmin123', // Password default
     countdownSeconds: 3,
-    xorKey: proyek123 // Kunci enkripsi sederhana (XOR)
+    xorKey: 'proyek123' // Kunci enkripsi sederhana (XOR) - HARUS STRING
 };
 
 let groupsData = [];
@@ -114,7 +114,8 @@ window.openModal = (id) => {
     try {
         redirectUrl = xorDecrypt(currentGroup.encoded);
     } catch (e) {
-        alert("Link error!");
+        console.error(e);
+        alert("Link error! Mungkin kunci enkripsi salah.");
         return;
     }
 
@@ -237,72 +238,83 @@ function setupTheme() {
 }
 
 function setupEventListeners() {
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = groupsData.filter(g => 
-            g.name.toLowerCase().includes(term) || 
-            g.category.toLowerCase().includes(term)
-        );
-        renderGroups(filtered);
-    });
+    const searchInput = document.getElementById('searchInput');
+    if(searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = groupsData.filter(g => 
+                g.name.toLowerCase().includes(term) || 
+                g.category.toLowerCase().includes(term)
+            );
+            renderGroups(filtered);
+        });
+    }
 
     // Admin Login Logic (Click footer 5 times)
     let clickCount = 0;
-    document.getElementById('adminLoginHint').addEventListener('click', () => {
-        clickCount++;
-        if (clickCount === 5) {
-            const pass = prompt("Masukkan Password Admin:");
-            if (pass === CONFIG.adminPass) {
-                isAdmin = true;
-                localStorage.setItem('wa_admin', 'true');
-                alert("Login Berhasil! Tombol gear muncul di atas.");
-                checkAdminSession();
-            } else {
-                alert("Password Salah!");
+    const adminHint = document.getElementById('adminLoginHint');
+    if(adminHint) {
+        adminHint.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 5) {
+                const pass = prompt("Masukkan Password Admin:");
+                if (pass === CONFIG.adminPass) {
+                    isAdmin = true;
+                    localStorage.setItem('wa_admin', 'true');
+                    alert("Login Berhasil! Tombol gear muncul di atas.");
+                    checkAdminSession();
+                } else {
+                    alert("Password Salah!");
+                }
+                clickCount = 0;
             }
-            clickCount = 0;
-        }
-    });
+        });
+    }
 }
 
 function checkAdminSession() {
     if (localStorage.getItem('wa_admin') === 'true') {
         isAdmin = true;
-        document.getElementById('adminTrigger').classList.remove('hidden');
+        const trigger = document.getElementById('adminTrigger');
+        if(trigger) trigger.classList.remove('hidden');
     }
 }
 
 // --- Encryption Helper (XOR Simple) ---
 // Note: Ini bukan security tingkat tinggi, tapi cukup untuk hindari scraper bodoh.
 function xorEncrypt(str) {
-    return str.split('').map(char => {
-        return String.fromCharCode(char.charCodeAt(0) ^ CONFIG.xorKey);
-    }).join('');
+    const keyStr = String(CONFIG.xorKey);
+    let result = '';
+    for (let i = 0; i < str.length; i++) {
+        const charCode = str.charCodeAt(i) ^ keyStr.charCodeAt(i % keyStr.length);
+        result += String.fromCharCode(charCode);
+    }
+    return result;
 }
 
 function xorDecrypt(encoded) {
-    // Jika encoded masih base64/plain (untuk backward compat demo), cek dulu
-    if (!encoded.includes(String.fromCharCode(CONFIG.xorKey))) {
-         // Fallback jika data belum dienkripsi dengan XOR (misal data dummy awal)
-         // Dalam produksi, semua data di JSON harus sudah di-XOR
-         return atob(encoded); // Asumsi dummy base64
+    const keyStr = String(CONFIG.xorKey);
+    let result = '';
+    for (let i = 0; i < encoded.length; i++) {
+        const charCode = encoded.charCodeAt(i) ^ keyStr.charCodeAt(i % keyStr.length);
+        result += String.fromCharCode(charCode);
     }
-    
-    return encoded.split('').map(char => {
-        return String.fromCharCode(char.charCodeAt(0) ^ CONFIG.xorKey);
-    }).join('');
+    return result;
 }
 
 // --- ADMIN PANEL FUNCTIONS ---
 
 window.toggleAdminPanel = () => {
     const panel = document.getElementById('adminPanel');
-    panel.classList.toggle('hidden');
-    if (!panel.classList.contains('hidden')) renderAdminList();
+    if(panel) {
+        panel.classList.toggle('hidden');
+        if (!panel.classList.contains('hidden')) renderAdminList();
+    }
 };
 
 function renderAdminList() {
     const list = document.getElementById('adminList');
+    if(!list) return;
     list.innerHTML = groupsData.map((g, index) => `
         <div class="flex justify-between items-center bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
             <div class="flex items-center gap-2 overflow-hidden">
@@ -332,7 +344,7 @@ window.editGroup = (index) => {
     
     const newDesc = prompt("Deskripsi:", g.description);
     const newStatus = prompt("Status (active, new, hot, trending, developing, members_XXX):", g.status);
-    const newLink = prompt("Link WhatsApp Asli (akan dienkripsi otomatis):", "https://chat.whatsapp.com/...");
+    const newLink = prompt("Link WhatsApp Asli (akan dienkripsi otomatis):", "https://chat.whatsapp.com/... ");
     
     if(newLink && newLink.startsWith('http')) {
         groupsData[index] = {
@@ -357,7 +369,7 @@ window.openEditor = () => {
     const icon = prompt("Emoji Icon:", "📢");
     const desc = prompt("Deskripsi:", "");
     const status = prompt("Status:", "new");
-    const link = prompt("Masukkan Link WhatsApp Lengkap:", "https://chat.whatsapp.com/");
+    const link = prompt("Masukkan Link WhatsApp Lengkap:", "https://chat.whatsapp.com/ ");
     
     if(link && link.startsWith('http')) {
         const newId = groupsData.length > 0 ? Math.max(...groupsData.map(g => g.id)) + 1 : 1;
@@ -374,14 +386,16 @@ window.openEditor = () => {
 
 function updateJsonOutput() {
     const output = document.getElementById('jsonOutput');
-    output.value = JSON.stringify(groupsData, null, 2);
+    if(output) output.value = JSON.stringify(groupsData, null, 2);
 }
 
 window.copyJsonResult = () => {
     const output = document.getElementById('jsonOutput');
-    output.select();
-    document.execCommand('copy');
-    alert("JSON berhasil dicopy! Sekarang paste ke file groups.json di GitHub kamu.");
+    if(output) {
+        output.select();
+        document.execCommand('copy');
+        alert("JSON berhasil dicopy! Sekarang paste ke file groups.json di GitHub kamu.");
+    }
 };
 
 // Start App
