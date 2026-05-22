@@ -35,51 +35,45 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans flex flex-col">
+<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
 
     <!-- Header -->
-    <header class="sticky top-0 z-40 bg-white/80 dark:bg-darkCard/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
-        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-darkCard/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm h-20">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center h-full">
             <h1 class="text-xl font-bold bg-gradient-to-r from-wa to-waDark bg-clip-text text-transparent">
                 WA Groups
             </h1>
-            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+            <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition text-xl">
                 🌙
             </button>
         </div>
         
-        <!-- Search Bar -->
-        <div class="max-w-md mx-auto px-4 pb-3">
-            <div class="relative">
-                <input type="text" id="searchInput" placeholder="Cari grup..." 
-                    class="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 border-none focus:ring-2 focus:ring-wa outline-none transition text-sm">
-                <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
-            </div>
+        <!-- Search Bar (Absolute positioned below header content if needed, or inside) -->
+        <div class="max-w-md mx-auto px-4 pb-3 absolute bottom-0 w-full">
+             <!-- Optional: Move search here if you want it inside header -->
         </div>
     </header>
+    
+    <!-- Search Bar Container (Outside Header for better spacing) -->
+    <div class="max-w-md mx-auto px-4 py-4 sticky top-20 z-30 bg-gray-50 dark:bg-darkBg/95 backdrop-blur">
+        <div class="relative">
+            <input type="text" id="searchInput" placeholder="Cari grup..." 
+                class="w-full pl-10 pr-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-wa outline-none transition text-sm shadow-sm">
+            <span class="absolute left-3 top-3 text-gray-400">🔍</span>
+        </div>
+    </div>
 
     <!-- Main Content -->
-    <main class="max-w-md mx-auto px-4 py-6 pb-24 space-y-6 flex-grow" id="app">
-        <!-- Loading State -->
+    <main class="max-w-md mx-auto px-4 py-2 pb-24 space-y-2" id="app">
         <div id="loading" class="flex justify-center py-10">
             <div class="loader"></div>
         </div>
-        <!-- Content will be injected here -->
     </main>
-
-    <!-- Footer (Penting untuk Admin Login) -->
-    <footer class="py-6 text-center text-xs text-gray-400 dark:text-gray-600">
-        <p>&copy; 2024 Direktori Grup WA.</p>
-        <!-- Elemen Tersembunyi untuk Trigger Login -->
-        <p id="adminLoginHint" class="mt-2 cursor-pointer select-none hover:text-gray-500">
-            v1.0.0
-        </p>
-    </footer>
 
     <!-- Bottom Sheet Modal -->
     <div id="modalOverlay" class="fixed inset-0 bg-black/50 z-50 hidden backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-    <div id="bottomSheet" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-darkCard rounded-t-3xl z-50 transform translate-y-full transition-transform duration-300 max-w-md mx-auto shadow-2xl overflow-hidden">
-        <div class="p-6">
+    <div id="bottomSheet" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-darkCard rounded-t-3xl z-50 transform translate-y-full transition-transform duration-300 max-w-md mx-auto shadow-2xl overflow-hidden border-t dark:border-gray-700">
+        <div class="p-6 pb-8">
             <div class="w-12 h-1 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-4"></div>
             <div class="flex items-center gap-4 mb-4">
                 <div id="modalIcon" class="text-4xl bg-gray-100 dark:bg-gray-800 p-3 rounded-2xl"></div>
@@ -90,71 +84,79 @@
             </div>
             <p id="modalDesc" class="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed"></p>
             
-            <!-- CAPTCHA Section -->
             <div id="captchaSection" class="mb-4 bg-gray-50 dark:bg-gray-800 p-3 rounded-xl border border-gray-200 dark:border-gray-700">
-                <p class="text-xs text-center mb-2 font-medium">Verifikasi Manusia</p>
+                <p class="text-xs text-center mb-2 font-medium text-gray-500">Verifikasi Manusia</p>
                 <div class="flex items-center justify-between gap-2">
                     <span id="captchaQuestion" class="font-mono text-lg font-bold text-waDark"></span>
-                    <input type="number" id="captchaInput" class="w-20 text-center bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg py-1 outline-none focus:border-wa" placeholder="?">
+                    <input type="number" id="captchaInput" class="w-20 text-center bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg py-2 outline-none focus:border-wa font-bold" placeholder="?">
                 </div>
-                <p id="captchaError" class="text-red-500 text-xs mt-1 hidden">Salah! Coba lagi.</p>
+                <p id="captchaError" class="text-red-500 text-xs mt-1 hidden text-center">Salah! Coba lagi.</p>
             </div>
 
-            <!-- Action Button -->
             <button id="actionBtn" disabled 
                 class="w-full bg-gray-300 dark:bg-gray-700 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 cursor-not-allowed">
                 <span id="btnText">Memverifikasi...</span>
             </button>
             
             <div class="mt-4 flex gap-2">
-                <button onclick="copyInvite()" class="flex-1 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-                    📋 Copy Invite
+                <button onclick="copyInvite()" class="flex-1 py-2.5 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    📋 Copy Link
                 </button>
-                <button onclick="shareGroup()" class="flex-1 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                <button onclick="shareGroup()" class="flex-1 py-2.5 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition">
                     🔗 Share
                 </button>
             </div>
         </div>
     </div>
 
-
-
-    <!-- Admin Panel Trigger -->
-<!-- Perubahan: tambah z-50, ubah top-16 (lebih bawah dari header) -->
-<button id="adminTrigger" class="fixed top-20 right-4 z-50 bg-gray-800 text-white p-3 rounded-full shadow-lg hidden hover:scale-110 transition opacity-80 hover:opacity-100">
-    ⚙️
-</button>
+    <!-- Admin Trigger Button (Fixed Position) -->
+    <!-- Top-24 agar tidak tertutup header (h-20 + padding) -->
+    <button id="adminTrigger" onclick="toggleAdminPanel()" class="fixed top-24 right-4 z-50 bg-gray-800 dark:bg-white text-white dark:text-gray-900 p-3 rounded-full shadow-xl hidden hover:scale-110 active:scale-90 transition duration-200">
+        ⚙️
+    </button>
 
     <!-- Admin Panel Modal -->
     <div id="adminPanel" class="fixed inset-0 bg-white dark:bg-darkBg z-[60] hidden overflow-y-auto">
-        <div class="max-w-md mx-auto p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">Admin Panel</h2>
-                <button onclick="toggleAdminPanel()" class="text-red-500 font-bold">Close</button>
+        <div class="max-w-md mx-auto min-h-screen p-6 relative">
+            <div class="flex justify-between items-center mb-8 mt-4">
+                <h2 class="text-2xl font-bold">⚙️ Panel Admin</h2>
+                <button onclick="toggleAdminPanel()" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-red-200 transition">Tutup</button>
             </div>
             
-            <div class="space-y-4">
-                <button onclick="openEditor()" class="w-full bg-wa text-white py-3 rounded-xl font-bold shadow-lg hover:bg-waDark transition">+ Tambah Grup Baru</button>
+            <div class="space-y-6">
+                <button onclick="openEditor()" class="w-full bg-wa text-white py-4 rounded-xl font-bold shadow-lg hover:bg-waDark transition transform active:scale-95 flex items-center justify-center gap-2">
+                    <span class="text-xl">+</span> Tambah Grup Baru
+                </button>
                 
-                <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-xl border border-yellow-200 dark:border-yellow-800">
-                    <h3 class="font-bold text-yellow-800 dark:text-yellow-500 mb-2">Cara Update:</h3>
-                    <ol class="list-decimal list-inside text-sm text-yellow-700 dark:text-yellow-400 space-y-1">
-                        <li>Edit atau Hapus grup di list bawah.</li>
-                        <li>Klik "Simpan & Generate JSON".</li>
-                        <li>Copy hasil JSON yang muncul.</li>
+                <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800">
+                    <h3 class="font-bold text-blue-800 dark:text-blue-400 mb-2 text-sm">📝 Cara Update:</h3>
+                    <ol class="list-decimal list-inside text-xs text-blue-700 dark:text-blue-300 space-y-1 leading-relaxed">
+                        <li>Edit/Hapus grup di list bawah.</li>
+                        <li>Klik tombol <b>Simpan & Generate JSON</b> (otomatis).</li>
+                        <li>Klik <b>Copy JSON Result</b> di bawah.</li>
                         <li>Paste ke file <code>groups.json</code> di GitHub.</li>
                     </ol>
                 </div>
 
-                <div id="adminList" class="space-y-3"></div>
+                <div id="adminList" class="space-y-3 pb-20"></div>
                 
-                <textarea id="jsonOutput" class="w-full h-32 bg-gray-900 text-green-400 font-mono text-xs p-3 rounded-xl mt-4" readonly placeholder="Hasil JSON akan muncul di sini..."></textarea>
-                <button onclick="copyJsonResult()" class="w-full bg-gray-800 text-white py-2 rounded-lg text-sm font-bold">📋 Copy JSON Result</button>
-                
-                <button onclick="logoutAdmin()" class="w-full border border-red-500 text-red-500 py-2 rounded-lg text-sm font-bold mt-4">Logout Admin</button>
+                <div class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-darkBg border-t dark:border-gray-700 max-w-md mx-auto">
+                    <button onclick="updateJsonOutput()" class="w-full bg-gray-800 dark:bg-gray-700 text-white py-3 rounded-lg font-bold mb-2 text-sm">💾 Refresh Preview JSON</button>
+                    <textarea id="jsonOutput" class="w-full h-32 bg-gray-900 text-green-400 font-mono text-xs p-3 rounded-xl mb-2 border border-gray-700" readonly placeholder="Preview JSON..."></textarea>
+                    <button onclick="copyJsonResult()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-bold text-sm shadow-lg">📋 Copy JSON Result</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Footer dengan Pemicu Login Tersembunyi -->
+    <footer class="py-8 text-center text-xs text-gray-400 dark:text-gray-600">
+        <p>&copy; 2024 Direktori Grup WA.</p>
+        <!-- Ini elemen yang harus diklik 5x -->
+        <p id="adminLoginHint" class="mt-2 cursor-pointer select-none hover:text-gray-500 transition inline-block px-4 py-2">
+            v1.0.0
+        </p>
+    </footer>
 
     <script src="app.js"></script>
 </body>
