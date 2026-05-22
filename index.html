@@ -21,16 +21,12 @@
         }
     </script>
     <style>
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        
-        /* Animations */
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
         .loader {
             border: 3px solid #f3f3f3; border-top: 3px solid #25D366;
             border-radius: 50%; width: 24px; height: 24px;
@@ -39,7 +35,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans">
+<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-300 min-h-screen font-sans flex flex-col">
 
     <!-- Header -->
     <header class="sticky top-0 z-40 bg-white/80 dark:bg-darkCard/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
@@ -63,7 +59,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-md mx-auto px-4 py-6 pb-24 space-y-6" id="app">
+    <main class="max-w-md mx-auto px-4 py-6 pb-24 space-y-6 flex-grow" id="app">
         <!-- Loading State -->
         <div id="loading" class="flex justify-center py-10">
             <div class="loader"></div>
@@ -71,7 +67,16 @@
         <!-- Content will be injected here -->
     </main>
 
-    <!-- Bottom Sheet Modal (Hidden by default) -->
+    <!-- Footer (Penting untuk Admin Login) -->
+    <footer class="py-6 text-center text-xs text-gray-400 dark:text-gray-600">
+        <p>&copy; 2024 Direktori Grup WA.</p>
+        <!-- Elemen Tersembunyi untuk Trigger Login -->
+        <p id="adminLoginHint" class="mt-2 cursor-pointer select-none hover:text-gray-500">
+            v1.0.0
+        </p>
+    </footer>
+
+    <!-- Bottom Sheet Modal -->
     <div id="modalOverlay" class="fixed inset-0 bg-black/50 z-50 hidden backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
     <div id="bottomSheet" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-darkCard rounded-t-3xl z-50 transform translate-y-full transition-transform duration-300 max-w-md mx-auto shadow-2xl overflow-hidden">
         <div class="p-6">
@@ -112,8 +117,8 @@
         </div>
     </div>
 
-    <!-- Admin Panel Trigger -->
-    <button id="adminTrigger" class="fixed top-4 right-4 z-30 bg-gray-800 text-white p-2 rounded-full shadow-lg hidden hover:scale-110 transition" onclick="toggleAdminPanel()">
+    <!-- ADMIN TRIGGER BUTTON (Wajib Ada) -->
+    <button id="adminTrigger" class="fixed top-20 right-4 z-30 bg-gray-800 text-white p-3 rounded-full shadow-lg hidden hover:scale-110 transition transform opacity-80 hover:opacity-100" onclick="toggleAdminPanel()" title="Admin Panel">
         ⚙️
     </button>
 
@@ -142,15 +147,11 @@
                 
                 <textarea id="jsonOutput" class="w-full h-32 bg-gray-900 text-green-400 font-mono text-xs p-3 rounded-xl mt-4" readonly placeholder="Hasil JSON akan muncul di sini..."></textarea>
                 <button onclick="copyJsonResult()" class="w-full bg-gray-800 text-white py-2 rounded-lg text-sm font-bold">📋 Copy JSON Result</button>
+                
+                <button onclick="logoutAdmin()" class="w-full border border-red-500 text-red-500 py-2 rounded-lg text-sm font-bold mt-4">Logout Admin</button>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="text-center py-6 text-xs text-gray-400 dark:text-gray-600">
-        <p>&copy; 2024 Direktori Grup WA</p>
-        <p id="adminLoginHint" class="mt-2 cursor-pointer select-none">Admin Login</p>
-    </footer>
 
     <script src="app.js"></script>
 </body>
