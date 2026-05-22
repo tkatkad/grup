@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WA Link Encoder (XOR)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+
+    <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl shadow-xl overflow-hidden fade-in">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-green-500 to-green-700 p-6 text-center">
+            <h1 class="text-2xl font-bold text-white">🔒 WA Link Encoder</h1>
+            <p class="text-green-100 text-sm mt-1">Amankan link grup sebelum masuk JSON</p>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6 space-y-4">
+            
+            <!-- Input Link -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Link Grup WhatsApp Asli
+                </label>
+                <input type="url" id="inputLink" placeholder="https://chat.whatsapp.com/..." 
+                    class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-green-500 outline-none transition text-gray-800 dark:text-white">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Format harus dimulai dengan <code>https://</code>
+                </p>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="processLink()" 
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg transform active:scale-95 transition-all">
+                🔐 Encode Link
+            </button>
+
+            <!-- Result Area (Hidden by default) -->
+            <div id="resultArea" class="hidden mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Hasil Encoded (Salin ini)
+                </label>
+                <textarea id="outputResult" readonly rows="3" 
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 text-green-400 font-mono text-sm border border-gray-700 focus:ring-2 focus:ring-green-500 outline-none resize-none"></textarea>
+                
+                <div class="grid grid-cols-2 gap-3 mt-3">
+                    <button onclick="copyResult()" 
+                        class="bg-gray-800 hover:bg-gray-700 text-white text-sm font-bold py-2 rounded-lg transition flex items-center justify-center gap-2">
+                        📋 Copy
+                    </button>
+                    <button onclick="clearAll()" 
+                        class="bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:text-red-400 text-sm font-bold py-2 rounded-lg transition">
+                        🗑️ Reset
+                    </button>
+                </div>
+
+                <!-- Preview JSON -->
+                <div class="mt-4 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800">
+                    <p class="text-xs font-bold text-blue-800 dark:text-blue-300 mb-1">Contoh Penulisan di JSON:</p>
+                    <code class="text-[10px] text-blue-600 dark:text-blue-400 break-all block font-mono">
+                        "encoded": "<span id="jsonPreview"></span>"
+                    </code>
+                </div>
+            </div>
+
+            <!-- Decoder Tool (Optional) -->
+            <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 transition">
+                        <span>🛠️ Butuh Decode? (Cek Link)</span>
+                        <span class="transform group-open:rotate-180 transition">▼</span>
+                    </summary>
+                    <div class="mt-3 space-y-2">
+                        <input type="text" id="decodeInput" placeholder="Paste kode encoded di sini..." 
+                            class="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-sm outline-none">
+                        <button onclick="decodeLink()" class="w-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold py-2 rounded-lg hover:bg-gray-300 transition">
+                            Cek Link Asli
+                        </button>
+                        <p id="decodeResult" class="text-xs text-center text-green-600 dark:text-green-400 font-mono break-all hidden"></p>
+                    </div>
+                </details>
+            </div>
+
+        </div>
+        
+        <!-- Footer -->
+        <div class="bg-gray-50 dark:bg-gray-900/50 p-3 text-center text-xs text-gray-400">
+            XOR Key: 123 | Compatible with app.js
+        </div>
+    </div>
+
+    <script>
+        const XOR_KEY = 123;
+
+        function xorEncrypt(str) {
+            return str.split('').map(char => {
+                return String.fromCharCode(char.charCodeAt(0) ^ XOR_KEY);
+            }).join('');
+        }
+
+        function xorDecrypt(str) {
+            return str.split('').map(char => {
+                return String.fromCharCode(char.charCodeAt(0) ^ XOR_KEY);
+            }).join('');
+        }
+
+        function processLink() {
+            const input = document.getElementById('inputLink').value.trim();
+            const resultArea = document.getElementById('resultArea');
+            const output = document.getElementById('outputResult');
+            const jsonPreview = document.getElementById('jsonPreview');
+
+            if (!input || !input.startsWith('http')) {
+                alert('⚠️ Mohon masukkan link yang valid (dimulai dengan http/https)');
+                return;
+            }
+
+            const encrypted = xorEncrypt(input);
+            
+            output.value = encrypted;
+            jsonPreview.textContent = encrypted;
+            
+            resultArea.classList.remove('hidden');
+            resultArea.classList.add('fade-in');
+        }
+
+        function copyResult() {
+            const output = document.getElementById('outputResult');
+            output.select();
+            document.execCommand('copy');
+            
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Tersalin!';
+            btn.classList.add('bg-green-600', 'text-white');
+            btn.classList.remove('bg-gray-800');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-green-600', 'text-white');
+                btn.classList.add('bg-gray-800');
+            }, 2000);
+        }
+
+        function clearAll() {
+            document.getElementById('inputLink').value = '';
+            document.getElementById('outputResult').value = '';
+            document.getElementById('jsonPreview').textContent = '';
+            document.getElementById('resultArea').classList.add('hidden');
+            document.getElementById('decodeInput').value = '';
+            document.getElementById('decodeResult').classList.add('hidden');
+        }
+
+        function decodeLink() {
+            const input = document.getElementById('decodeInput').value.trim();
+            const resultDisplay = document.getElementById('decodeResult');
+            
+            if (!input) return;
+
+            try {
+                const decrypted = xorDecrypt(input);
+                resultDisplay.textContent = decrypted;
+                resultDisplay.classList.remove('hidden');
+                
+                if (!decrypted.startsWith('http')) {
+                    resultDisplay.classList.add('text-red-500');
+                    resultDisplay.classList.remove('text-green-600');
+                } else {
+                    resultDisplay.classList.add('text-green-600');
+                    resultDisplay.classList.remove('text-red-500');
+                }
+            } catch (e) {
+                alert('Gagal decode. Pastikan string valid.');
+            }
+        }
+    </script>
+</body>
+</html>
