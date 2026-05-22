@@ -36,3 +36,49 @@ Jika ingin mengedit `groups.json` secara manual di GitHub tanpa login admin:
 - Link dienkripsi menggunakan XOR sederhana.
 - Redirect hanya terjadi setelah interaksi user (klik + captcha).
 - Mencegah bot scraper sederhana mengambil link secara massal.
+
+
+Kamu tidak perlu menginstal apa pun! Emoji adalah karakter teks standar yang sudah ada di semua perangkat (HP, Laptop, Mac).
+Berikut 3 cara termudah untuk mendapatkan emoji seperti yang saya gunakan:
+
+
+Cara 1: Pakai Keyboard Bawaan (Paling Cepat)
+Hampir semua device punya shortcut untuk membuka panel emoji:
+Windows: Tekan tombol Windows + . (titik) secara bersamaan.
+Mac: Tekan Control + Command + Spasi.
+HP (Android/iPhone): Klik tombol ikon wajah/smile di keyboard saat mengetik.
+
+
+Cara 2: Copy-Paste dari Daftar Ini (Siap Pakai)
+Saya sudah buatkan daftar emoji yang cocok untuk kategori grup pendidikan/komunitas. Kamu tinggal blok, copy, dan paste ke dalam file groups.json:
+🎓 Pendidikan & Sekolah
+text
+1
+👶 Parenting & Anak
+text
+1
+💻 Teknologi & Umum
+text
+1
+🗣️ Bahasa & Komunikasi
+text
+1
+🏆 Kegiatan & Prestasi
+text
+1
+✨ Status/Badge (Untuk kolom status)
+text
+1
+
+
+
+Cara 3: Situs Koleksi Emoji
+Jika ingin mencari emoji spesifik lainnya, buka situs:
+Emojipedia.org (Paling lengkap, ada deskripsi arti)
+GetEmoji.com (Tinggal copy)
+Contoh Cara Memasang di groups.json
+Misalnya kamu mau buat grup "Komunitas Kucing", cari emoji kucing di keyboard (atau copy dari sini: 🐱), lalu masukkan ke JSON:
+json
+123456789
+Tips: Dalam satu baris icon, cukup masukkan satu emoji saja agar tampilan di HP rapi dan tidak berantakan.
+
