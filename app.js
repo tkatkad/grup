@@ -1,8 +1,8 @@
 // Konfigurasi
 const CONFIG = {
-    adminPass: 'admin123', // Password default
+    adminPass: 'proyekadmin123', // Password default
     countdownSeconds: 3,
-    xorKey: 123 // Kunci enkripsi sederhana (XOR)
+    xorKey: proyek123 // Kunci enkripsi sederhana (XOR)
 };
 
 let groupsData = [];
