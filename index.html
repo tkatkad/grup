@@ -117,10 +117,13 @@
         </div>
     </div>
 
-    <!-- ADMIN TRIGGER BUTTON (Wajib Ada) -->
-    <button id="adminTrigger" class="fixed top-20 right-4 z-30 bg-gray-800 text-white p-3 rounded-full shadow-lg hidden hover:scale-110 transition transform opacity-80 hover:opacity-100" onclick="toggleAdminPanel()" title="Admin Panel">
-        ⚙️
-    </button>
+
+
+    <!-- Admin Panel Trigger -->
+<!-- Perubahan: tambah z-50, ubah top-16 (lebih bawah dari header) -->
+<button id="adminTrigger" class="fixed top-20 right-4 z-50 bg-gray-800 text-white p-3 rounded-full shadow-lg hidden hover:scale-110 transition opacity-80 hover:opacity-100">
+    ⚙️
+</button>
 
     <!-- Admin Panel Modal -->
     <div id="adminPanel" class="fixed inset-0 bg-white dark:bg-darkBg z-[60] hidden overflow-y-auto">
